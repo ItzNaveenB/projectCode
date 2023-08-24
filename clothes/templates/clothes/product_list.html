@@ -1,0 +1,146 @@
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .carousel {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .carousel img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'slick/slick.css' %}">
+    <script src="{% static 'slick/slick.js' %}"></script>
+</head>
+<body>
+    <h2>Product List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Images</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in clothing %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>
+                    {% if product.images.all %}
+                        <div class="carousel">
+                            {% for image in product.images.all %}
+                                <img src="{{ image.image.url }}" alt="Clothing Image">
+                            {% endfor %}
+                        </div>
+                    {% elif product.image %}
+                        <img src="{{ product.image.url }}" alt="Clothing Image">
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+<script>
+    $(document).ready(function() {
+        $('.carousel').slick({
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000
+        });
+    });
+</script>
+</html> {% endcomment %}
+
+
+<!-- product_list.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h2>Product List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Category</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in clothing %}
+            <tr>
+                <td>{{ product.code }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.discount }}</td>
+                <td>{{ product.category }}</td>
+                <td>
+                    {% if product.images.all %}
+                        <img class="product-image" src="{{ product.images.first.image.url }}" alt="Clothing Image">
+                    {% elif product.image %}
+                        <img class="product-image" src="{{ product.image.url }}" alt="Clothing Image">
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

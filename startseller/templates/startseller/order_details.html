@@ -1,0 +1,50 @@
+{% comment %} <!-- seller/order_details.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details</title>
+</head>
+<body>
+    <h1>Order Details</h1>
+    <p>Order ID: {{ order.id }}</p>
+    <p>Product: {{ order.product.name }}</p>
+    <p>Seller: {{ order.seller.business_name }}</p>
+    <p>User: {{ order.user.username }}</p>
+    <p>Status: {{ order.status }}</p>
+    <p>Delivery Status: {{ order.delivery_status }}</p>
+    
+    {% if order.delivery_status != 'Delivered' %}
+        <form method="post" action="{% url 'seller:update_delivery_status' order.id %}">
+            {% csrf_token %}
+            <label for="delivery_status">Update Delivery Status:</label>
+            <select name="delivery_status" id="delivery_status">
+                <option value="Pending" {% if order.delivery_status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="In Transit" {% if order.delivery_status == 'In Transit' %}selected{% endif %}>In Transit</option>
+                <option value="Delivered" {% if order.delivery_status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                <option value="Failed" {% if order.delivery_status == 'Failed' %}selected{% endif %}>Failed</option>
+            </select>
+            <button type="submit">Update</button>
+        </form>
+    {% endif %}
+</body>
+</html> {% endcomment %}
+
+<!-- seller/order_details.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+</head>
+<body>
+    <h1>Order Details</h1>
+    <p>Order ID: {{ order.id }}</p>
+    <p>Status: {{ order.status }}</p>
+    <p>Delivery Status: {{ order.delivery_status }}</p>
+    <!-- Add more details as needed -->
+</body>
+</html>

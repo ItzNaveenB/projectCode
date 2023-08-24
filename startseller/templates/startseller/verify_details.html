@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verify Details</title>
+</head>
+<body>
+  <h2>Please answer some questions:</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <label for="id_tax_details">Verify Tax Details:</label>
+    <input type="text" id="id_tax_details" name="tax_details" required>
+    <br><br>
+    <label for="id_signature">Signature:</label>
+    <input type="text" id="id_signature" name="signature" required>
+    <br><br>
+    <button type="submit" formaction="{% url 'startseller:tax_info' %}">Prev</button>
+    <button type="submit" formaction="{% url 'startseller:home' %}">Submit</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tax Information</title>
+</head>
+<body>
+  <h2>Please answer some questions:</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <label for="id_gst_number">GST Number:</label>
+    <input type="text" id="id_gst_number" name="gst_number" required>
+    <br><br>
+    <label for="id_bank_account">Bank Account Details:</label>
+    <input type="text" id="id_bank_account" name="bank_account" required>
+    <br><br>
+    <button type="submit" formaction="{% url 'startseller:product_info' %}">Prev</button>
+    <button type="submit" formaction="{% url 'startseller:verify_details' %}">Next</button>
+  </form>
+</body>
+</html>

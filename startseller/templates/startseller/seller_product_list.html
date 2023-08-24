@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seller Product List</title>
+</head>
+<body>
+    <h1>Seller Product List</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <strong>{{ product.name }}</strong><br>
+                Image: <img src="{{ product.image.url }}" alt="Product Image" height="100"><br>
+                Cost: ${{ product.price }}<br>
+                Code: {{ product.code }}<br>
+                Quantity: {{ product.quantity }}<br>
+                Category: {{ product.get_category_display }}<br>
+                Seller: {{ product.seller.name }}<br>
+                Last Price Date: {{ product.LastPriceDate }}<br>
+                Last Price: ${{ product.LastPrice }}<br>
+            </li>
+        {% empty %}
+            <li>No products available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

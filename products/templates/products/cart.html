@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .cart-item {
+      display: flex;
+      margin-bottom: 20px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image {
+      margin-right: 20px;
+    }
+
+    .product-image img {
+      width: 200px;
+      height: 200px;
+    }
+
+    .product-details {
+      flex-grow: 1;
+    }
+
+    .product-details h3 {
+      margin-top: 0;
+    }
+
+    .product-details p.price {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .product-details p.quantity {
+      margin-top: 5px;
+    }
+
+    .total-cost {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .btn-remove {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .btn-quantity {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Cart</h2>
+    <div class="cart-items">
+      {% for item in cart_items %}
+        <div class="cart-item">
+          <div class="product-image">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="200" height="200">
+          </div>
+          <div class="product-details">
+            <h3>{{ item.product.name }}</h3>
+            <p class="price">${{ item.product.price }}</p>
+            <form method="POST" action="{% url 'update_cart_item' item.id %}">
+              {% csrf_token %}
+              <div>
+                <p class="quantity">Quantity: {{ item.quantity }}</p>
+                <button class="btn-quantity" type="submit" name="action" value="increase">+</button>
+                <button class="btn-quantity" type="submit" name="action" value="decrease">-</button>
+              </div>
+            </form>
+            <button class="btn-remove" onclick="removeFromCart({{ item.id }})">Remove</button>
+          </div>
+        </div>
+      {% endfor %}
+      <p class="total-cost">Total Cost: ${{ total_cost }}</p>
+    </div>
+  </div>
+  {% if measurements_exist %}
+  <h2>Measurement Details</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Neck</th>
+        <th>Chest</th>
+        <th>Waist</th>
+        <th>Hip</th>
+        <th>Inseam</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% with latest_measurement=measurements.last %}
+        <tr>
+          <td>{{ latest_measurement.neck }}</td>
+          <td>{{ latest_measurement.chest }}</td>
+          <td>{{ latest_measurement.waist }}</td>
+          <td>{{ latest_measurement.hip }}</td>
+          <td>{{ latest_measurement.inseam }}</td>
+        </tr>
+      {% endwith %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No measurements found.</p>
+{% endif %}
+  <script>
+    function removeFromCart(itemId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', "{% url 'remove_from_cart' %}");
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          window.location.reload();
+        }
+      };
+      xhr.send('item_id=' + itemId);
+    }
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
+  
+</body>
+</html> 

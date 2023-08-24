@@ -1,0 +1,54 @@
+<!-- seller/templates/seller/catalog.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Catalog</title>
+    <!-- Add any CSS styling here -->
+</head>
+<body>
+
+    <div>
+        <h2>Catalog</h2>
+        <button>Search</button>
+    </div>
+
+    <div>
+        <h3>Categories</h3>
+        <button>All Categories</button>
+        <a href="{% url 'startseller:add_category' %}"><button>Add Categories</button></a>
+        {% for category in categories %}
+    <a href="{% url 'update_category' category.id %}"><button>Update</button></a>
+{% endfor %}
+        <button>All Products</button>
+    </div>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Image</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- You can iterate over the 'products' data that was passed from the view -->
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>{{ product.category }}</td>
+                        <td><img src="{{ product.image.url }}" alt="{{ product.name }}" width="100"></td>
+                        <td>{{ product.quantity }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

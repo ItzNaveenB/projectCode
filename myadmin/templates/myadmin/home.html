@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Statistics</title>
+</head>
+<body>
+    <h1>Seller Statistics</h1>
+    <p>Total Sellers: {{ total_sellers }}</p>
+    <p>Active Sellers: {{ active_sellers }}</p>
+    <p>Inactive Sellers: {{ inactive_sellers }}</p>
+    <a href="{% url 'myadmin:all_sellers' %}">
+        <button>All Sellers</button>
+    </a>  
+    <h1>Order Details</h1>
+    <h1>Products Listed</h1>
+    <p>Total Products: {{ total_products }}</p>
+    <p>Active Products: {{ active_listings }}</p>
+    <p>Inactive Stock: {{ inactive_listings }}</p>
+    <p>Out of Stock: {{ out_of_stock }}</p>
+    <p>Low on stock: {{ low_on_stock }}</p>
+
+</body>
+</html>

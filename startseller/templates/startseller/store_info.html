@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Store Information</title>
+</head>
+<body>
+  <h2>Please answer some questions:</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <label for="id_store_name">Store Name (Shown on Website):</label>
+    <input type="text" id="id_store_name" name="store_name" required>
+    <br><br>
+    <label for="id_categories">Categories to Sell:</label>
+    <input type="text" id="id_categories" name="categories" required>
+    <br><br>
+    <button type="submit" formaction="{% url 'startseller:business_info' %}">Prev</button>
+    <button type="submit" formaction="{% url 'startseller:product_info' %}">Next</button>
+  </form>
+</body>
+</html>

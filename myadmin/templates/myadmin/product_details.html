@@ -1,0 +1,30 @@
+{% load custom %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product Details</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Product Details</h2>
+    <div class="product-details">
+      <div class="product-info">
+        <h3>Product-</h3>
+        <p>{{ product.id }}</p>
+      </div>
+      <div class="product-image">
+        <br>
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200" height="200">
+      </div>
+      <h2>{{ product.name }}</h2>
+      <p><strong>Price:</strong> ${{ product.price }}</p>
+      <div class="product-info">
+        <h3>Description</h3>
+        <p>{{ product.description }}</p>
+      </div>
+      <div class="product-info">
+        <h3>Additional Info</h3>
+        <p>{{ product.AdditionalInfo }}</p>
+      </div>
+</body>
+</html>

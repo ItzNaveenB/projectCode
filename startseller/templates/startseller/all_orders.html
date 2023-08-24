@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Orders</title>
+</head>
+<body>
+    <h1>All Orders</h1>
+    <ul>
+        {% for order in all_orders %}
+            <li>
+                <strong>Order ID: {{ order.order_id }}</strong><br>
+                Status: {{ order.status }}<br>
+                Price: ${{ order.price }}<br>
+                Quantity: {{ order.quantity }}<br>
+                <a href="{% url 'startseller:order_details' order_id=order.order_id %}">View Details</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

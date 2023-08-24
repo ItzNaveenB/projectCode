@@ -1,0 +1,206 @@
+{% load custom %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product Details</title>
+  <style>
+    /* Add your CSS styling here */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h2 {
+      margin-top: 0;
+    }
+    
+    .product-details {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .product-image {
+      margin-bottom: 20px;
+    }
+    
+    .product-image img {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .product-info {
+      margin-bottom: 20px;
+    }
+    
+    .product-info h3 {
+      margin-top: 0;
+    }
+    
+    .product-info p {
+      margin: 0;
+    }
+    
+    .size-selection {
+      margin-bottom: 20px;
+    }
+    
+    .review-form {
+      margin-top: 20px;
+    }
+    
+    .reviews {
+      margin-top: 20px;
+    }
+    
+    .review {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+    
+    .review strong {
+      font-weight: bold;
+    }
+    
+    .review .rating {
+      display: flex;
+    }
+    
+    .review .rating span {
+      margin-right: 5px;
+    }
+    
+    .delete-review {
+      display: inline-block;
+      color: red;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Product Details</h2>
+    <div class="product-details">
+      <div class="product-image">
+        <span>Product Rating: </span>
+        {% if average_rating %}
+          {% for _ in average_rating|make_range %}
+            <span>⭐</span>
+          {% endfor %}
+        {% else %}
+          <span>No rating available.</span>
+        {% endif %}
+        <br>
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200" height="200">
+      </div>
+      <h2>{{ product.name }}</h2>
+      <p><strong>Price:</strong> ${{ product.price }}</p>
+      <div class="product-info">
+        <h3>Description</h3>
+        <p>{{ product.description }}</p>
+      </div>
+      <div class="size-selection">
+        <form method="post" action="{% url 'add_details' product_id=product.id %}">
+          {% csrf_token %}
+          <label for="size">Select Size:</label>
+          <select name="size" id="size">
+            {% for size in sizes %}
+              <option value="{{ size }}">{{ size }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit">Add Details</button>
+        </form>
+      </div>
+      <form method="post" action="{% url 'add_to_cart' product_id=product.id %}">
+        {% csrf_token %}
+        <label for="age">Enter your age:</label>
+        <input type="number" name="age" id="age" required>
+        <button type="submit">Add to Cart</button>
+      </form>
+      
+      <div class="review-form">
+        <h3>Write a Review</h3>
+        <form method="post" action="{% url 'submit_review' product_id=product.id %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Submit Review</button>
+        </form>
+      </div>
+      
+      <div class="reviews">
+        <h3>Reviews</h3>
+        {% if reviews %}
+          {% for review in reviews %}
+            <div class="review">
+              <strong>{{ review.user }}</strong>
+              <div class="rating">
+                  {% for _ in review.rating|make_range %}
+                    <span>⭐</span>
+                  {% endfor %}
+              </div>
+              <p>{{ review.comment }}</p>
+              <p><em>Created at: {{ review.created_at }}</em></p>
+              {% if user.is_authenticated and user == review.user %}
+                <form method="post" action="{% url 'delete_review' review_id=review.id %}">
+                  {% csrf_token %}
+                  <button class="delete-review" type="submit">Delete</button>
+                </form>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No reviews yet.</p>
+        {% endif %}
+      </div>      
+      
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  
+  <script>
+    function deleteReview(reviewId) {
+      // Send an AJAX request to delete the review
+      // Replace the URL below with the actual URL for deleting a review
+      const deleteUrl = `/reviews/delete/${reviewId}/`;
+
+      fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          // Reload the page after successful deletion
+          location.reload();
+        } else {
+          console.error('Failed to delete the review.');
+        }
+      })
+      .catch(error => {
+        console.error('Error while deleting the review:', error);
+      });
+    }
+  </script>
+</body>
+</html>

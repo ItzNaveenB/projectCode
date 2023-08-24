@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seller Home Page</title>
+</head>
+<body>
+    <h1>Welcome to the Seller's Home Page</h1>
+    <!-- Display the new orders -->
+    <h2>New Orders</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <!-- Other order details you want to display -->
+        </tr>
+        {% for order in new_orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <!-- Display other order details -->
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Display the urgent orders -->
+    <h2>Urgent</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <!-- Other order details you want to display -->
+        </tr>
+        {% for order in urgent_orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <!-- Display other order details -->
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Display the reached orders -->
+    <h2>Reached</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <!-- Other order details you want to display -->
+        </tr>
+        {% for order in reached_orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <!-- Display other order details -->
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Display the reattempted orders -->
+    <h2>Reattempted</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <!-- Other order details you want to display -->
+        </tr>
+        {% for order in reattempted_orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <!-- Display other order details -->
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'startseller:all_orders' %}" class="btn btn-primary">View All Orders</a>
+
+
+    <!-- New section for Stock and Inventory -->
+    <h2>Stock and Inventory</h2>
+    <table>
+        <tr>
+            <th>Total Products</th>
+            <th>Total Categories</th>
+            <th>Total Quantity</th>
+            <th>Low on Stock</th>
+            <th>Total Value</th>
+        </tr>
+        <tr>
+            <td>{{ total_products }}</td>
+            <td>{{ total_categories }}</td>
+            <td>{{ total_quantity }}</td>
+            <td>{{ low_on_stock }}</td>
+            <td>{{ total_value }}</td>
+        </tr>
+    </table>
+    <a href="#" class="btn btn-primary">View All Inventory</a>
+    
+    <!-- Listings section -->
+    <h2>Listings</h2>
+    <table>
+        <tr>
+            <th>Active</th>
+            <th>Ready for Activation</th>
+            <th>Inactive</th>
+            <th>Out of Stock</th>
+            <th>Low Stock</th>
+        </tr>
+        <tr>
+            <td>{{ active_listings }}</td>
+            <td>{{ ready_for_activation }}</td>
+            <td>{{ inactive_listings }}</td>
+            <td>{{ out_of_stock }}</td>
+            <td>{{ low_on_stock }}</td>
+        </tr>
+    </table>
+</body>
+</html>

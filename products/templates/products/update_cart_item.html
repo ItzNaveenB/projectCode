@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update Cart Item</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    form {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    input[type="number"] {
+      width: 50px;
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-delete {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Update Cart Item</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.quantity }}
+      <button class="btn" type="submit">Update</button>
+    </form>
+    <form method="POST" action="{% url 'remove_from_cart' %}">
+      {% csrf_token %}
+      <input type="hidden" name="item_id" value="{{ cart_item.id }}">
+      <button class="btn btn-delete" type="submit">Delete</button>
+    </form>
+  </div>
+</body>
+</html>

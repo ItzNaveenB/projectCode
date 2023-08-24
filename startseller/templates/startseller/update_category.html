@@ -1,0 +1,58 @@
+<!-- seller/templates/seller/update_category.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Category</title>
+    <!-- Add any CSS styling here -->
+</head>
+<body>
+    <div>
+        <h2>Catalog</h2>
+        <button>Search</button>
+    </div>
+
+    <div>
+        <h3>Categories</h3>
+        <button>All Categories</button>
+        <button>Add Categories</button>
+        <button>Update Categories</button>
+        <button>All Products</button>
+    </div>
+
+    <div>
+        <h2>Update Categories</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="category_name">Category Name:</label>
+            <input type="text" id="category_name" name="category_name" required><br>
+
+            <label for="category_code">Category Code:</label>
+            <input type="text" id="category_code" name="category_code" required><br>
+
+            <label for="parent_category">Parent Category:</label>
+            <select id="parent_category" name="parent_category">
+                <option value="">None</option>
+                <!-- You can add options dynamically based on existing categories -->
+                <!-- For example, if you have a 'categories' list containing category objects -->
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="sub_category">Sub Category:</label>
+            <select id="sub_category" name="sub_category">
+                <option value="">None</option>
+                <!-- You can add options dynamically based on existing categories -->
+                <!-- For example, if you have a 'categories' list containing category objects -->
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select><br>
+
+            <button type="submit">Update Category</button>
+            <button type="submit" formaction="{% url 'delete_category' category.id %}">Delete Category</button>
+        </form>
+    </div>
+</body>
+</html>

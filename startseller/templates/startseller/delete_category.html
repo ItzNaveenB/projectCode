@@ -1,0 +1,32 @@
+<!-- seller/templates/seller/delete_category.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Category</title>
+    <!-- Add any CSS styling here -->
+</head>
+<body>
+    <div>
+        <h2>Catalog</h2>
+        <button>Search</button>
+    </div>
+
+    <div>
+        <h3>Categories</h3>
+        <button>All Categories</button>
+        <button>Add Categories</button>
+        <button>Update Categories</button>
+        <button>All Products</button>
+    </div>
+
+    <div>
+        <h2>Delete Category</h2>
+        <p>Are you sure you want to delete the category "{{ category.name }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+</body>
+</html>

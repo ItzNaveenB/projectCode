@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Sellers</title>
+</head>
+<body>
+    <h1>All Sellers</h1>
+
+    <ul>
+        {% for seller in sellers %}
+            <li>
+                <strong>{{ seller.name }}</strong><br>
+                <img src="{{ seller.picture.url }}" alt="Seller Picture" height="100"><br>
+                Address: {{ seller.address }}<br>
+                Contact: {{ seller.contact_details }}
+                <!-- You can also display product information related to this seller if needed -->
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+</body>
+</html>

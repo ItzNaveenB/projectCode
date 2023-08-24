@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product List</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Product List</h2>
+    <div class="product-list">
+      {% for product in products %}
+        <div class="product-item">
+          <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200" height="200">
+          </div>
+          <div class="product-details">
+            <h3>{{ product.name }}</h3>
+            <p>Quantity: {{ product.quantity }}</p>
+            <p class="price">${{ product.price }}</p>
+            <p>Seller Address: {{ product.seller.address }}</p>
+            <p>Seller Mobile: {{ product.seller.contact_details }}</p>
+            <a href="{% url 'myadmin:product_details' product.id %}" class="btn-details">Details</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!-- update_product.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Product</title>
+</head>
+<body>
+    <h1>Update Product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Product</button>
+    </form>
+    <form method="post" action="{% url 'startseller:delete_product' product.pk %}">
+        {% csrf_token %}
+        <button type="submit">Delete Product</button>
+    </form>
+</body>
+</html>

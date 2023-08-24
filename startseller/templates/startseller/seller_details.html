@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seller Details</title>
+</head>
+<body>
+    <h1>{{ seller.name }}</h1>
+    <img src="{{ seller.picture.url }}" alt="Seller Picture">
+    <p>Address: {{ seller.address }}</p>
+    <p>Contact: {{ seller.contact_details }}</p>
+
+    <h2>Products</h2>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

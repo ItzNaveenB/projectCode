@@ -1,0 +1,23 @@
+<!-- seller/update_delivery_status.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Delivery Status</title>
+</head>
+<body>
+    <h1>Update Delivery Status</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="delivery_status">Select New Delivery Status:</label>
+        <select name="delivery_status" id="delivery_status">
+            <option value="Pending">Pending</option>
+            <option value="In Transit">In Transit</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Failed">Failed</option>
+        </select>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

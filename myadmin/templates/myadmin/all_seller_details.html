@@ -1,0 +1,21 @@
+<!-- myadmin/all_seller_details.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Seller Details</title>
+</head>
+<body>
+    <h1>All Seller Details</h1>
+
+    <h2>Business Info</h2>
+    <p>Name: {{ business_info.business_name }}</p>
+    <p>Address: {{ business_info.business_address }}</p>
+
+    <h2>Store Info</h2>
+    <p>Name: {{ store_info.store_name }}</p>
+    <p>Categories: {% for category in store_info.categories.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+
+    <!-- Include similar sections for other details -->
+
+</body>
+</html>

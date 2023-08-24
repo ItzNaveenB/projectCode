@@ -1,0 +1,155 @@
+<!-- add_product.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+</head>
+<body>
+    <h1>Add Product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Product</button>
+    </form>
+    <br>
+    <a href="{% url 'products:Product_List' %}">All Products</a>
+    {% if product %}
+        <a href="{% url 'products:update_product' product.id %}">Update Product</a>
+    {% endif %}
+    <a href="{% url 'products:add_product' %}">Add More Products</a>
+</body>
+</html>
+
+
+
+
+<!-- product_list.html -->
+{% comment %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+    <style>
+        /* CSS styling for the layout */
+        .navbar {
+            float: left;
+            width: 200px;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar li {
+            margin-bottom: 10px;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .buttons {
+            margin-bottom: 20px;
+        }
+
+        .buttons button {
+            margin-right: 10px;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-form input[type="text"] {
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Catalog</a></li>
+            <li><a href="#">Inventory</a></li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#">Reports</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>Product List</h1>
+
+        <div class="heading">
+            <h2>Orders</h2>
+            <div class="search-form">
+                <input type="text" placeholder="Search">
+                <button type="submit">Search</button>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button>All Orders</button>
+            <button>Packed Orders</button>
+            <button>Handover</button>
+            <button>In Transit</button>
+            <button>Delivered</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Order ID</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Total Quantity</th>
+                    <th>Order Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="product-details">
+                            <img src="product_image.jpg" alt="Product Image" width="50">
+                            <p>Product Name</p>
+                            <p>Price: $50</p>
+                            <p>Quantity: 2</p>
+                            <p>Status: Ordered</p>
+                        </div>
+                    </td>
+                    <td>12345</td>
+                    <td>$100</td>
+                    <td>Ordered</td>
+                    <td>2</td>
+                    <td>2023-07-15</td>
+                </tr>
+                <!-- Add more rows for other orders -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> {% endcomment %}

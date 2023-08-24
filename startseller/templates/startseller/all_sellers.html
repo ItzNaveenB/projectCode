@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Sellers</title>
+</head>
+<body>
+    <h1>All Sellers</h1>
+
+    <ul>
+        {% for seller in sellers %}
+            <li>
+                <strong>{{ seller.name }}</strong><br>
+                <img src="{{ seller.picture.url }}" alt="Seller Picture" height="100"><br>
+                Address: {{ seller.address }}<br>
+                Contact: {{ seller.contact_details }}
+            </li>
+            <br>
+            <a href="{% url 'startseller:toggle_seller_status' seller.id %}">
+                <button>{% if seller.active %}Deactivate{% else %}Activate{% endif %}</button>
+            </a>
+            
+        {% endfor %}
+    </ul>
+</body>
+</html>
