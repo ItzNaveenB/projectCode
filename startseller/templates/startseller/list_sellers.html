@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Sellers</title>
+</head>
+<body>
+    <h1>List of Sellers</h1>
+    <ul>
+        {% for seller in sellers %}
+            <li>
+                <a href="{% url 'seller_detail' seller.id %}">{{ seller.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

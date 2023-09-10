@@ -1,4 +1,4 @@
-{% load custom %}
+ {% load custom %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,18 +9,11 @@
     <h2>Product Details</h2>
     <div class="product-details">
       <div class="product-image">
-        <span>Product Rating: </span>
-        {% if average_rating %}
-          {% for _ in average_rating|make_range %}
-            <span>⭐</span>
-          {% endfor %}
-        {% else %}
-          <span>No rating available.</span>
-        {% endif %}
         <br>
         <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200" height="200">
       </div>
       <h2>{{ product.name }}</h2>
+      <p>Product {{product.code}}</p>
       <p><strong>Price:</strong> ${{ product.price }}</p>
       <div class="product-info">
         <h3>Description</h3>
@@ -30,7 +23,7 @@
         <h3>Additional Info</h3>
         <p>{{ product.AdditionalInfo }}</p>
       </div>
-      <div class="size-selection">
+      {% comment %} <div class="size-selection">
         <form method="post" action="{% url 'add_details' product_id=product.id %}">
           {% csrf_token %}
           <label for="size">Select Size:</label>
@@ -41,18 +34,18 @@
           </select>
           <button type="submit">Add Details</button>
         </form>
-      </div>
+      </div> {% endcomment %}
 
       
-      <div class="review-form">
+      {% comment %} <div class="review-form">
         <h3>Write a Review</h3>
         <form method="post" action="{% url 'submit_review' product_id=product.id %}">
           {% csrf_token %}
           {{ form.as_p }}
           <button type="submit">Submit Review</button>
         </form>
-      </div>
-      
+      </div> {% endcomment %}
+{% comment %}       
       <div class="reviews">
         <h3>Reviews</h3>
         {% if reviews %}
@@ -77,7 +70,7 @@
         {% else %}
           <p>No reviews yet.</p>
         {% endif %}
-      </div>      
+      </div>       {% endcomment %}
       
       {% if messages %}
         <ul class="messages">
@@ -114,4 +107,4 @@
     }
   </script>
 </body>
-</html>
+</html> 

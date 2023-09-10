@@ -1,27 +1,3 @@
-{% comment %} <!DOCTYPE html>
-<html>
-<head>
-    <title>Add Product</title>
-</head>
-<body>
-    <h1>Add Product</h1>
-
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <!-- Add the input field for seller's name -->
-        <label for="{{ form.seller.id_for_label }}">Seller Name:</label>
-        {{ form.seller }}
-        <br>
-
-        <!-- Rest of the form fields -->
-        {{ form.as_p }}
-
-        <button type="submit">Add Product</button>
-    </form>
-</body>
-</html> {% endcomment %}
-
-
 <!DOCTYPE html>
 <html>
 <head>

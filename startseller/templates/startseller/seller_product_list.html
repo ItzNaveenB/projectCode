@@ -14,9 +14,6 @@
                 Code: {{ product.code }}<br>
                 Quantity: {{ product.quantity }}<br>
                 Category: {{ product.get_category_display }}<br>
-                Seller: {{ product.seller.name }}<br>
-                Last Price Date: {{ product.LastPriceDate }}<br>
-                Last Price: ${{ product.LastPrice }}<br>
             </li>
         {% empty %}
             <li>No products available.</li>

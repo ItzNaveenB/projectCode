@@ -3,28 +3,38 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import ExtendedUserCreationForm,SellerReviewForm,AddProductForm,ProductForm,SellerForm
-from .models import BusinessInfo, StoreInfo,SellerInfo, ProductInfo,Category, TaxInfo, VerifyDetails,Seller,Order,SellerProduct
+from .forms import TaxInfoForm, VerifyDetailsForm,ExtendedUserCreationForm,SellerReviewForm,AddProductForm,ProductForm,SellerForm,BusinessInfoForm,StoreInfoForm,ProductInfoForm
+from .models import SellerInfo,Category,Seller,Order,SellerProduct,BusinessInfo,StoreInfo,ProductInfo,TaxInfo,VerifyDetails
 from products.models import Product
 from django.db.models import Sum, F, ExpressionWrapper, IntegerField
-from django.db.models import Avg
-
+from django.db.models import Avg 
 
 def signup_view(request):
     if request.method == 'POST':
         form = ExtendedUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.email = form.cleaned_data['email']
-            user.save()
-            login(request, user)
-            return redirect('business_info')
+            password = form.cleaned_data['password1']
+            confirm_password = form.cleaned_data['password2']
+            
+            if password == confirm_password:
+                user = form.save(commit=False)
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.email = form.cleaned_data['email']
+                user.save()
+                login(request, user)
+                messages.success(request, 'You have been registered and logged in successfully.')
+                return redirect('startseller:home')
+            else:
+                messages.error(request, 'Passwords do not match. Please enter matching passwords.')
+        else:
+            messages.error(request, 'Form validation failed. Please check your input.')
     else:
         form = ExtendedUserCreationForm()
     return render(request, 'startseller/signup.html', {'form': form})
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -36,38 +46,100 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'You have been logged in successfully.')
-                return redirect('business_info')
+                return redirect('startseller:home')
             else:
-                messages.error(request, 'Invalid username or password.')
+                messages.info(request, 'Invalid username or password.')
     else:
         form = AuthenticationForm()
     return render(request, 'startseller/login.html', {'form': form})
+
 
 @login_required
 def logout_view(request):
     logout(request)
     messages.success(request, 'You have been logged out successfully.')
-    return redirect('login')
+    return redirect('startseller:login')
 
+@login_required
 def business_info(request):
-    business_info = BusinessInfo.objects.filter(user=request.user).first()
-    return render(request, 'startseller/business_info.html', {'business_info': business_info})
+    business_info, created = BusinessInfo.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        form = BusinessInfoForm(request.POST, instance=business_info)
+        if form.is_valid():
+            business_info = form.save(commit=False)
+            business_info.user = request.user
+            business_info.save()
+            return redirect('store_info')
+    else:
+        form = BusinessInfoForm(instance=business_info)
 
+    return render(request, 'startseller/business_info.html', {'form': form})
+
+
+@login_required
 def store_info(request):
-    store_info = StoreInfo.objects.filter(user=request.user).first()
-    return render(request, 'startseller/store_info.html', {'store_info': store_info})
+    store_info, created = StoreInfo.objects.get_or_create(user=request.user)
 
+    if request.method == 'POST':
+        form = StoreInfoForm(request.POST, instance=store_info)
+        if form.is_valid():
+            store_info = form.save(commit=False)
+            store_info.user = request.user
+            store_info.save()
+            return redirect('product_info')
+    else:
+        form = StoreInfoForm(instance=store_info)
+
+    return render(request, 'startseller/store_info.html', {'form': form})
+
+@login_required
 def product_info(request):
-    product_info = ProductInfo.objects.filter(user=request.user).first()
-    return render(request, 'startseller/product_info.html', {'product_info': product_info})
+    product_info, created = ProductInfo.objects.get_or_create(user=request.user)
 
+    if request.method == 'POST':
+        form = ProductInfoForm(request.POST, instance=product_info)
+        if form.is_valid():
+            product_info = form.save(commit=False)
+            product_info.user = request.user
+            product_info.save()
+            return redirect('startseller:tax_info')
+    else:
+        form = ProductInfoForm(instance=product_info)
+
+    return render(request, 'startseller/product_info.html', {'form': form})
+
+
+@login_required
 def tax_info(request):
-    tax_info = TaxInfo.objects.filter(user=request.user).first()
-    return render(request, 'startseller/tax_info.html', {'tax_info': tax_info})
+    tax_info, created = TaxInfo.objects.get_or_create(user=request.user)
 
+    if request.method == 'POST':
+        form = TaxInfoForm(request.POST, instance=tax_info)
+        if form.is_valid():
+            tax_info = form.save(commit=False)
+            tax_info.user = request.user
+            tax_info.save()
+            return redirect('startseller:verify_details')
+    else:
+        form = TaxInfoForm(instance=tax_info)
+    return render(request, 'startseller/tax_info.html', {'form': form})
+
+
+@login_required
 def verify_details(request):
-    verify_details = VerifyDetails.objects.filter(user=request.user).first()
-    return render(request, 'startseller/verify_details.html', {'verify_details': verify_details})
+    verify_details, created = VerifyDetails.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = VerifyDetailsForm(request.POST, instance=verify_details)
+        if form.is_valid():
+            verify_details = form.save(commit=False)
+            verify_details.user = request.user
+            verify_details.save()
+            return redirect('startseller:home')
+    else:
+        form = VerifyDetailsForm(instance=verify_details)
+    return render(request, 'startseller/verify_details.html', {'form': form})
 
 @login_required
 def toggle_seller_status(request, seller_id):
@@ -102,18 +174,19 @@ def home(request):
     except Seller.DoesNotExist:
         seller = Seller.objects.create(user=request.user, business_name='Your Business Name', business_address='Your Business Address')
     seller_orders = Order.objects.filter(user=request.user)
-
-    total_products = SellerProduct.objects.count()
-    total_categories = SellerProduct.objects.values('category').distinct().count()
-    total_quantity = SellerProduct.objects.aggregate(total_quantity=Sum('quantity'))['total_quantity']
-    low_on_stock = SellerProduct.objects.filter(quantity__lte=5).count()
-    total_value = SellerProduct.objects.aggregate(total_value=Sum('price'))['total_value']
+    
+    # Products = SellerProduct.objects.all()
+    total_products = SellerProduct.objects.filter(user = request.user).count()
+    total_categories = SellerProduct.objects.filter(user = request.user).values('category').distinct().count()
+    total_quantity = SellerProduct.objects.filter(user = request.user).aggregate(total_quantity=Sum('quantity'))['total_quantity']
+    low_on_stock = SellerProduct.objects.filter(quantity__lte=5, user = request.user).count()
+    total_value = SellerProduct.objects.filter(user = request.user).aggregate(total_value=Sum('price'))['total_value']
 
     # Calculate listings information
-    active_listings = SellerProduct.objects.filter(quantity__gt=0).count()
-    ready_for_activation = SellerProduct.objects.filter(quantity=0).count()
-    inactive_listings = SellerProduct.objects.filter(quantity=0).count()
-    out_of_stock = SellerProduct.objects.filter(quantity=0).count()
+    active_listings = SellerProduct.objects.filter(quantity__gt=0,user=request.user).count()
+    ready_for_activation = SellerProduct.objects.filter(quantity=0,user=request.user).count()
+    inactive_listings = SellerProduct.objects.filter(quantity=0,user=request.user).count()
+    out_of_stock = SellerProduct.objects.filter(quantity=0,user=request.user).count()
 
     context = {
         'total_products': total_products,
@@ -129,8 +202,9 @@ def home(request):
 
     return render(request, 'startseller/Home.html', context)
 
+
 def catalog(request):
-    products = SellerProduct.objects.all()
+    products = SellerProduct.objects.filter(user=request.user)
     return render(request, 'startseller/catalog.html', {'products': products})
 
 
@@ -176,12 +250,11 @@ def delete_category(request, category_id):
     
     return render(request, 'startseller/delete_category.html', {'category': category})
 
-
+@login_required
 def product_details(request, product_id):
     product = get_object_or_404(SellerProduct, id=product_id)
-    sizes = ['S', 'M', 'L', 'XL', 'XXL']
-    reviews = product.reviews.all()
-    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    # reviews = product.reviews.all()
+    # average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
 
     if request.method == 'POST':
         form = SellerReviewForm(request.POST)
@@ -190,20 +263,20 @@ def product_details(request, product_id):
             review.product = product
             review.user = request.user
             review.save()
-            return redirect('product_details', product_id=product_id)
+            return redirect('startseller:product_details', product_id=product_id)
     else:
         form = SellerReviewForm()
 
     context = {
         'product': product,
-        'sizes': sizes,
-        'reviews': reviews,
+        # 'reviews': reviews,
         'form': form,
-        'average_rating': average_rating,
+        # 'average_rating': average_rating,
     }
+    
     return render(request, 'startseller/product_details.html', context)
 
-
+@login_required
 def update_Product(request, pk):
     product = get_object_or_404(SellerProduct, pk=pk)
 
@@ -211,12 +284,13 @@ def update_Product(request, pk):
         form = AddProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
-            return redirect('Product_List')
+            return redirect('startseller:seller_product_list')
     else:
         form = AddProductForm(instance=product)
 
     return render(request, 'startseller/update_product.html', {'form': form, 'product': product})
 
+@login_required
 def delete_product(request, product_id):
     product = get_object_or_404(SellerProduct, pk=product_id)
 
@@ -226,13 +300,24 @@ def delete_product(request, product_id):
 
     return render(request, 'startseller/seller_product_list.html', {'product': product})
 
-def seller_details(request, seller_id):
+
+def list_sellers(request):
+    sellers = SellerInfo.objects.all()
+    seller_data = [{'name': seller.name,
+                    'picture_url': seller.picture.url,
+                    'address': seller.address,
+                    'contact_details': seller.contact_details} for seller in sellers]
+    return render(request, 'startseller/list_sellers.html', {'seller_data': seller_data})
+    
+
+@login_required
+def seller_detail(request, seller_id):
     seller = SellerInfo.objects.get(id=seller_id)
-    products = seller.product_set.all()  
+    # products = seller.product_set.all()  
 
     context = {
         'seller': seller,
-        'products': products,
+        # 'products': products,
     }
     return render(request, 'startseller/seller_details.html', context)
 
@@ -250,6 +335,7 @@ def add_seller(request):
     }
     return render(request, 'startseller/add_seller.html', context)
 
+# @login_required
 def all_sellers(request):
     sellers = SellerInfo.objects.all()
 
@@ -258,35 +344,38 @@ def all_sellers(request):
     }
     return render(request, 'startseller/all_sellers.html', context)
 
+@login_required
 def add_product(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
+        form = AddProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            product.user = request.user  
+            product.user = request.user
             product.save()
             return redirect('startseller:seller_product_list')
     else:
-        form = ProductForm()
+        form = AddProductForm()
 
     context = {
         'form': form,
     }
     return render(request, 'startseller/add_product.html', context)
 
+# @login_required
 def seller_product_list(request):
-    products = SellerProduct.objects.all()  
+    products = SellerProduct.objects.filter(user = request.user)  
     context = {
         'products': products,
     }
     return render(request, 'startseller/seller_product_list.html', context)
 
+@login_required
 def order_details(request, order_id):
     order = get_object_or_404(Order, id=order_id)  
     context = {'order': order}
     return render(request, 'startseller/order_details.html', context)
 
-
+@login_required
 def all_orders(request):
     all_orders = [
         {'order_id': 1, 'status': 'New Order'},

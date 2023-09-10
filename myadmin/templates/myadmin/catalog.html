@@ -7,11 +7,6 @@
 
     <div>
         <h3>Categories</h3>
-        {% comment %} <button>All Categories</button>
-        <a href=""><button>Add Categories</button></a>
-        {% for category in categories %}
-            <a href=""><button>Update</button></a>
-        {% endfor %} {% endcomment %}
         <a href="{% url 'myadmin:product_list' %}"><button>All Products</button></a>
     </div>
 
@@ -33,7 +28,7 @@
                         <td>{{ product.name }}</td>
                         <td>{{ product.code }}</td>
                         <td>{{ product.category }}</td>
-                        <td>{{ product.seller.name }}</td> <!-- Replace 'product.seller.name' with the actual attribute path -->
+                        <td>{{ product.user.username }}</td> <!-- Replace 'product.seller.name' with the actual attribute path -->
                         <td><img src="{{ product.image.url }}" alt="{{ product.name }}" width="100"></td>
                         <td>${{ product.price }}</td>
                     </tr>

@@ -4,16 +4,18 @@
     <title>Seller Details</title>
 </head>
 <body>
-    <h1>{{ seller.name }}</h1>
-    <img src="{{ seller.picture.url }}" alt="Seller Picture">
-    <p>Address: {{ seller.address }}</p>
-    <p>Contact: {{ seller.contact_details }}</p>
+    <h1>Seller Details</h1>
+    <h2>{{ seller.name }}</h2>
+    <img src="{{ seller.picture.url }}" alt="{{ seller.name }}" width="200">
+    <p><strong>Address:</strong> {{ seller.address }}</p>
+    <p><strong>Contact Details:</strong> {{ seller.contact_details }}</p>
+    <a href="{% url 'startseller:all_sellers' %}">Back to Sellers List</a>
 
-    <h2>Products</h2>
+    {% comment %} <h2>Products</h2>
     <ul>
         {% for product in products %}
             <li>{{ product.name }}</li>
         {% endfor %}
-    </ul>
+    </ul> {% endcomment %}
 </body>
 </html>
